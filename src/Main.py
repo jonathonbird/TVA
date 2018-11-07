@@ -4,7 +4,9 @@ from random import sample
 nVoters = 5
 nCandidates = 3
 
-candidates = range(nCandidates)
+# this is not good, we need candidates to be in the form: {A, B, C, ...}
+# candidates = range(nCandidates)
+candidates = [chr(i) for i in range(ord('A'), ord('A') + nCandidates)]
 
 preferences = {}
 
@@ -18,7 +20,9 @@ for voter in range(nVoters):
 ### implementation of voting schemes
 
 # PLURALITY VOTING
-def plurality_voting() :
+def plurality_voting(preferencesMatrix) :
 
+    for voter in range(nVoters):
+        # if preferences[0, voter] work in progress don't mess up plz
 
 preferences = function()
