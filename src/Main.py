@@ -26,12 +26,12 @@ for voter in range(nVoters):
 ### implementation of voting schemes
 def voting_for_two():
     for voter, preference in preferences.items():
-        voting[preference[0]] += 1;
-        voting[preference[1]] += 1;
+        voting[preference[0]] += 1
+        voting[preference[1]] += 1
 
 def plurality_voting():
     for voter, preference in preferences.items():
-        voting[preference[0]] += 1;
+        voting[preference[0]] += 1
 
 def anti_plurality_voting():
     # print(preferences)
@@ -39,12 +39,12 @@ def anti_plurality_voting():
         for i, p in enumerate(preference):
             if i is len(preference) - 1:
                 break
-            voting[p] += 1;
+            voting[p] += 1
 
 def borda_voting():
     for voter, preference in preferences.items():
         for i, p in enumerate(preference):
-            voting[p] += len(preference) - 1 - i;
+            voting[p] += len(preference) - 1 - i
 
 # PLURALITY VOTING
 # def plurality_voting(preferencesMatrix) :
