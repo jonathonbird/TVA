@@ -20,25 +20,24 @@ for voter in range(nVoters):
     print("For voter " +str(voter)+ " the preferences are: " +str(preferences[voter]))
 
 # implementation of voting schemes
-def voting_for_two(preference):
-    for voter, preference in preferences.items():
-        voting[preference[0]] += 1
-        voting[preference[1]] += 1
+def voting_for_two(preferences):
+    for voter, voter_preference in preferences.items():
+        voting[voter_preference[0]] += 1
+        voting[voter_preference[1]] += 1
 
-def plurality_voting(preference):
-    for voter, preference in preferences.items():
-        voting[preference[0]] += 1
+def plurality_voting(preferences):
+    for voter, voter_preference in preferences.items():
+        voting[voter_preference[0]] += 1
 
-def anti_plurality_voting(preference):
+def anti_plurality_voting(preferences):
     # print(preferences)
-    for voter, preference in preferences.items():
-        for i, p in enumerate(preference):
-            if i is len(preference) - 1:
+    for voter, voter_preference in preferences.items():
+        for i, preference in enumerate(voter_preference):
+            if i is len(voter_preference) - 1:
                 break
-            voting[p] += 1
+            voting[preference] += 1
 
-def borda_voting(preference):
-    for voter, preference in preferences.items():
-        for i, p in enumerate(preference):
-            voting[p] += len(preference) - 1 - i
-
+def borda_voting(preferences):
+    for voter, voter_preference in preferences.items():
+        for i, p in enumerate(voter_preference):
+            voting[p] += len(voter_preference) - 1 - i
