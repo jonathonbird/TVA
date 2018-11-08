@@ -22,12 +22,12 @@ for voter in range(nVoters):
 # WiP
 def calc_happiness(outcome):
 
-    '''
+    """
     In this assignment we use the following basic definition of happiness level of voter 𝑖: 𝐻𝑖 = 𝑚 − 𝑗, where 𝑗 – is a
     position of a winning candidate in a true preference list of voter 𝑖. For example, if the true preference list of voter
     𝑖 is {𝐵, 𝐶, 𝐴,𝐷}, and the voting outcome is {𝐴, 𝐶, 𝐵,𝐷}, the happiness level of this voter is 𝐻𝑖 = 1, because the
     winning candidate 𝐴 is at position 𝑗 = 3 in the true preference list.
-    '''
+    """
 
     happiness = {}
 
@@ -40,9 +40,10 @@ def calc_happiness(outcome):
 
 
 vote = VotingScheme(preferences, nCandidates)
-print(vote.plurality_voting())
+# print(vote.plurality_voting())
 # print(vote.voting_for_two())
 # print(vote.anti_plurality_voting())
-# print(vote.borda_voting())
-print('\n OUTCOME: \n', vote.get_outcome())
+print(vote.borda_voting())
+print('OUTCOME: \n', vote.get_outcome())
 print(calc_happiness(vote.get_outcome()))
+
