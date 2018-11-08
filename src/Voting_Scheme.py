@@ -42,5 +42,5 @@ class VotingScheme:
                 self.voting[p] += len(voter_preference) - 1 - i
         return self.voting
 
-    def get_voting(self):
-        return self.voting
+    def get_outcome(self):
+        return sorted(self.voting, key=self.voting.get, reverse=True)
