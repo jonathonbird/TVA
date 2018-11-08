@@ -23,7 +23,7 @@ def calc_happiness(voting):
     happiness = {}
     for voter, voter_preference in preferences.items():
         favorite = voter_preference[0]
-        happiness[voter] =  max(voting.values()) - voting[favorite]
+        happiness[voter] =  voting[favorite]
         print("For voter " +str(voter)+ " the favorite is: " +str(favorite)+ " received a vote of: " +str(voting[favorite]))
         print("Max: " +str(max(voting.values())))
     return happiness
@@ -33,4 +33,4 @@ print(vote.plurality_voting())
 print(vote.voting_for_two())
 print(vote.anti_plurality_voting())
 print(vote.borda_voting())
-
+print(calc_happiness(vote.plurality_voting()))
