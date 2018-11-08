@@ -1,5 +1,6 @@
 # import numpy as np
 from random import sample
+from Voting_Scheme import VotingScheme
 
 nVoters = 5
 nCandidates = 5
@@ -11,33 +12,25 @@ preferences = {}
 
 # Dictionary with the output of the vote
 voting = {}
-for candidate in range(ord('A'), ord('A') + nCandidates):
-    voting[chr(candidate)] = 0
 
 # ouput (giorgos says that maybe this should be in a function, probably he's right
 for voter in range(nVoters):
     preferences[voter] = sample(candidates, len(candidates))
     print("For voter " +str(voter)+ " the preferences are: " +str(preferences[voter]))
 
-# implementation of voting schemes
-def voting_for_two(preferences):
+# WiP
+def calc_happiness(voting):
+    happiness = {}
     for voter, voter_preference in preferences.items():
-        voting[voter_preference[0]] += 1
-        voting[voter_preference[1]] += 1
+        favorite = voter_preference[0]
+        happiness[voter] =  max(voting.values()) - voting[favorite]
+        print("For voter " +str(voter)+ " the favorite is: " +str(favorite)+ " received a vote of: " +str(voting[favorite]))
+        print("Max: " +str(max(voting.values())))
+    return happiness
 
-def plurality_voting(preferences):
-    for voter, voter_preference in preferences.items():
-        voting[voter_preference[0]] += 1
+vote = VotingScheme(preferences, nCandidates)
+print(vote.plurality_voting())
+print(vote.voting_for_two())
+print(vote.anti_plurality_voting())
+print(vote.borda_voting())
 
-def anti_plurality_voting(preferences):
-    # print(preferences)
-    for voter, voter_preference in preferences.items():
-        for i, preference in enumerate(voter_preference):
-            if i is len(voter_preference) - 1:
-                break
-            voting[preference] += 1
-
-def borda_voting(preferences):
-    for voter, voter_preference in preferences.items():
-        for i, p in enumerate(voter_preference):
-            voting[p] += len(voter_preference) - 1 - i
