@@ -18,9 +18,12 @@ class Compromise:
 
         happinesses = self.vs.calc_happiness()
         outcome = self.vs.get_outcome()
+        #it is for only 1 voter
         print("outcome: "+str(outcome))
-        print("voter 0 has happiness is "+str(happinesses[0]))
+        print("(sincerely rank)voter 0 has happiness is "+str(happinesses[0]))
+
         '''
+        #it is for all voters
         for voter, voter_preferences in self.preferences.items():
             v, Ov, Hv, z = self.compromise(voter,happinesses[voter],outcome,voting_scheme)
             print("best strategy: " + str(v))
