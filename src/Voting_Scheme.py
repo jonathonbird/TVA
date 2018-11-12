@@ -85,9 +85,8 @@ class VotingScheme:
         for happiness in self.calc_happiness().values():
             overall += happiness
         return overall
-
-    """
-    Possibly empty set of strategic-voting options S = {Si},i∈n.
+	"""
+	Possibly empty set of strategic-voting options S = {Si},i∈n.
     a strategic-voting option for voter i,is a tuple
      Si = (v,O~,H~,z),
     where,
@@ -221,3 +220,52 @@ class VotingScheme:
         Ov = choiceSchemes[bestIndex].get_outcome()
         Hv = choiceSchemes[bestIndex].calc_overall_happiness()
         return bestStrategy,Ov,Hv,z
+
+		
+    """
+    Execute a voting scheme.
+    The possible voting_scheme are:
+    0 - Plurality voting
+    1 - Anti-plurality voting
+    2 - Voting for two
+    3 - Borda voting
+    """
+
+    def execute_voting(self, voting_scheme):
+        if voting_scheme is 0:
+            return self.plurality_voting()
+        elif voting_scheme is 1:
+            return self.anti_plurality_voting()
+        elif voting_scheme is 1:
+            return self.voting_for_two()
+        else:
+            return self.borda_voting()
+
+    """
+    Generate the second round of the voting where only the two more voted candidates are options
+    When a second round is executed after applying strategic voting in the first round, the voting for the second round
+    will be made with the real preferences
+    The only possible voting scheme here is plurality
+    """
+    def second_round(self, preferences):
+        self.preferences = preferences
+        first_round = self.get_outcome()
+        possible_candidates = [first_round[0], first_round[1]]
+        # self.nCandidates = len(possible_candidates)
+        new_preference = {}
+        for voter, voter_preferences in self.preferences.items():
+            for candidate in voter_preferences:
+                if candidate in possible_candidates:
+                    try:
+                        new_preference[voter].append(candidate)
+                    except:
+                        new_preference[voter] = [candidate]
+        # for voter, prefences in new_preference.items():
+        #     print("For voter", voter, "the preferences are:", prefences)
+        self.preferences = new_preference
+        self.plurality_voting()
+
+    def get_opponent(self, pref_candidate):
+        for candidate in self.get_outcome()[:2]:
+            if candidate != pref_candidate:
+                return candidate
