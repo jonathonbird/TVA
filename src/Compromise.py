@@ -1,11 +1,18 @@
 from Voting_Scheme import VotingScheme
 """
-    Voting a Candidate that is easy to beat insincerely high in the first round so that the second round is easy to win
+    Voting a Candidate with the hope this candidate can get elected 
     The possible voting_scheme are:
     0 - Plurality voting
     1 - Anti-plurality voting
     2 - Voting for two
     3 - Borda voting
+    
+    Step1: exchange position of an alternative(not my first prefer) and hater
+    Step2: save new favor information
+    Step3: repeat Step1 until it has no alternative
+    Step4: choose what strategy v which has an alternative ranked at the highest position (min position)
+        Step 4.1: If there are more than one strategy, choose what strategy makes voter more happy than others
+    Step5: return v,O,H,z
     """
 class Compromise:
 
@@ -48,6 +55,7 @@ class Compromise:
         winnerPositionOfChoices = {}
         newFavorPositionOfChoices = {}
         choiceIndex = 0
+
         #find second higher candidate (not my favorite candidate to compromise)
         for i in range(1,len(outcome)):
             temp = outcome[i]
@@ -97,7 +105,7 @@ class Compromise:
         minFavorPosition = min(newFavorPositionOfChoices.values())
         for i,pos in newFavorPositionOfChoices.items():
             if pos == minFavorPosition:
-                if len(bestStrategy) == 0 or happinessOfChoices[i] >happinessOfChoices[bestIndex]:
+                if len(bestStrategy) == 0 or happinessOfChoices[i] > happinessOfChoices[bestIndex]:
                     bestStrategy = choices[i]
                     bestIndex = i
         #print("maxHappiness is: " + str(maxHappiness))
