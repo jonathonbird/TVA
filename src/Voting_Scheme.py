@@ -97,7 +97,7 @@ class VotingScheme:
     (i.e., what the advantage is for i)
     """
 
-    def applySchemeByVotingVector(self,votingVector):
+    def applySchemeByVotingVector(self, votingVector):
         if votingVector[0] > 1:#borda
             self.borda_voting()
         elif votingVector[1] == 0:# plurality
@@ -236,7 +236,7 @@ class VotingScheme:
             return self.plurality_voting()
         elif voting_scheme is 1:
             return self.anti_plurality_voting()
-        elif voting_scheme is 1:
+        elif voting_scheme is 2:
             return self.voting_for_two()
         else:
             return self.borda_voting()

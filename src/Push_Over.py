@@ -41,9 +41,36 @@ class PushOver:
             self.change_voter_votes_plurality(voter)
 
     """
-    In plurality voting only one candidate can be voted and it is therefore the only that should be changed
+    In plurality voting only one candidate can be voted and it is therefore the only that should be changed.
     """
     def change_voter_votes_plurality(self, voter):
+        self.change_voter_vote(voter, 0)
+
+    """
+    In voting for two, only the two first candidates in the preference list get a point. Since both of them get a point
+    it is not important which one is the first or second in the manipulation.
+    """
+    def change_voter_votes_for_two(self, voter):
+        self.change_voter_vote(voter, 0)
+        self.change_voter_vote(voter, 1)
+
+    """
+    In anti-plurality voting, only the least preferred candidate in the preference list does not get a point.
+    Therefore, only changing the least preferred candidate could affect the outcome of the voting
+    """
+    def change_voter_votes_anti_plurality(self, voter):
+        self.change_voter_vote(voter, len(self.preferences[voter]))
+
+    """
+    In borda voting every preference gets a point and the higher it is in the preference list, the more points it gets. 
+    Therefore, all possible combinations of preferences have to be checked
+    """
+    def change_voter_votes_borda(self, voter):
+        # TODO
+        # self.change_voter_vote(voter, len(self.preferences[voter]))
+        return
+
+    def change_voter_vote(self, voter, vote):
         new_preferences = self.preferences.copy()
         possible_strategy = []
         true_preferred_cand = self.preferences[voter][0]
@@ -59,7 +86,7 @@ class PushOver:
             help = voter_preferences[c_index_v_pref]
             voter_preferences[c_index_v_pref] = true_preferred_cand
             # print("The voter", voter, "was voting for", voter_preferences[0], "and is gonna try to vote for", help)
-            voter_preferences[0] = help
+            voter_preferences[vote] = help
             new_preferences[voter] = voter_preferences
             # Create a new voting scheme with the new preferences
             new_vs = VotingScheme(new_preferences, len(new_preferences[0]))
