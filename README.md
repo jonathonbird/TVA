@@ -9,7 +9,7 @@ This software is the implementation of an agent called Tactical Voting Analyst (
 Alessandro Scoppio  
 Giorgos Patsiaouras  
 Rodrigo Emmanuel Brechard Alarcia  
-Trương Huy Cường   
+Truong Huy Cuong 
 
 ## Execute
         $ python3.6 Main.py
