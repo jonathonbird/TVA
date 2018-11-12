@@ -1,6 +1,6 @@
 # import numpy as np
 from random import sample
-from Voting_Scheme import VotingScheme
+from Voting_Scheme import VS
 from Push_Over import  PushOver
 
 nVoters = 10
@@ -23,18 +23,18 @@ for voter in range(nVoters):
 # print(vote.plurality_voting())
 # print(vote.voting_for_two())
 # print(vote.anti_plurality_voting())
-vote.borda_voting()
+# vote.borda_voting()
 #vote.plurality_voting()
 #vote.voting_for_two()
 #vote.anti_plurality_voting()
 #print('OUTCOME: '+ str( vote.get_outcome()))
-print("The overall happiness is", vote.calc_overall_happiness())
+# print("The overall happiness is", vote.calc_overall_happiness())
 
 #print("test-happiness of voter " + str(0) + " are: " + str(vote.calc_happiness_by_preference(vote.preferences[0][0])))
-vote.compromisingStrategy(0,[4,3,2,1,0])
+# vote.compromisingStrategy(0,[4,3,2,1,0])
 
 # vote.borda_voting()
 # print('OUTCOME: \n', vote.get_outcome())
 # print("The overall happiness is", vote.calc_overall_happiness())
 
-PushOver(preferences, 0)
+PushOver(preferences, VS.PLURALITY_VOTING)

@@ -1,14 +1,10 @@
 from Voting_Scheme import VotingScheme
 import collections
 
+
 class PushOver:
     """
     Voting a Candidate that is easy to beat insincerely high in the first round so that the second round is easy to win
-    The possible voting_scheme are:
-    0 - Plurality voting
-    1 - Anti-plurality voting
-    2 - Voting for two
-    3 - Borda voting
     """
     def __init__(self, preferences, voting_scheme):
 

@@ -1,9 +1,19 @@
+from enum import Enum
+
+
+class VS(Enum):
+    PLURALITY_VOTING = 0
+    ANTI_PLURALITY_VOTING = 1
+    VOTING_FOR_TWO = 2
+    BORDA = 3
+
+
 class VotingScheme:
 
-    def __init__(self, preferences, nCandidates):
+    def __init__(self, preferences, n_candidates):
         self.preferences = preferences
         self.voting = {}
-        self.nCandidates = nCandidates
+        self.nCandidates = n_candidates
         self.reset_voting()
 
     """
@@ -85,12 +95,11 @@ class VotingScheme:
         for happiness in self.calc_happiness().values():
             overall += happiness
         return overall
-	"""
-	Possibly empty set of strategic-voting options S = {Si},i∈n.
-    a strategic-voting option for voter i,is a tuple
-     Si = (v,O~,H~,z),
-    where,
-    v – is a tactically modified preference list of this voter, 
+
+    """
+    Possibly empty set of strategic-voting options S = {Si},i∈n. a strategic-voting option for voter i,
+    is a tuple Si = (v,O~,H~,z), where:
+    v – is a tactically modified preference list of this voter,
     O~ – a voting outcome resulting from applying v,
     H~ – an overall voter happiness level resulting from applying V,
     z – briefly states why i prefers O~ over O
@@ -232,11 +241,11 @@ class VotingScheme:
     """
 
     def execute_voting(self, voting_scheme):
-        if voting_scheme is 0:
+        if voting_scheme is VS.PLURALITY_VOTING:
             return self.plurality_voting()
-        elif voting_scheme is 1:
+        elif voting_scheme is VS.ANTI_PLURALITY_VOTING:
             return self.anti_plurality_voting()
-        elif voting_scheme is 2:
+        elif voting_scheme is VS.VOTING_FOR_TWO:
             return self.voting_for_two()
         else:
             return self.borda_voting()
