@@ -1,11 +1,6 @@
 from Voting_Scheme import VotingScheme
 """
     Voting a Candidate with the hope this candidate can get elected 
-    The possible voting_scheme are:
-    0 - Plurality voting
-    1 - Anti-plurality voting
-    2 - Voting for two
-    3 - Borda voting
     
     Step1: exchange position of an alternative(not my first prefer) and hater
     Step2: save new favor information

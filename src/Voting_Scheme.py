@@ -106,15 +106,15 @@ class VotingScheme:
     (i.e., what the advantage is for i)
     """
 
-    def get_happiness_by_voter(self,voter):
-        happinesses = self.calc_happiness()
-        return happinesses[voter]
-    def isHappy(self,happiness):
+    def get_happiness_by_voter(self, voter):
+        return self.calc_happiness()[voter]
+
+    def is_happy(self, happiness):
         if happiness == self.nCandidates-1:
             return True
         else:
             return False
-		
+
     """
     Execute a voting scheme.
     The possible voting_scheme are:
