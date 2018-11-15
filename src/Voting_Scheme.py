@@ -71,7 +71,7 @@ class VotingScheme:
     def get_outcome(self):
         return sorted(self.voting, key=self.voting.get, reverse=True)
 
-    def calc_happiness(self):
+    def calc_happiness(self, outcome):
 
         """
         In this assignment we use the following basic definition of happiness level of voter 𝑖: 𝐻𝑖 = 𝑚 − 𝑗, where 𝑗 – is a
@@ -81,8 +81,7 @@ class VotingScheme:
         """
 
         happiness = {}
-
-        winner = self.get_outcome()[0]
+        winner = outcome[0]
 
         for voter, voter_preferences in self.preferences.items():
 
@@ -107,7 +106,11 @@ class VotingScheme:
     """
 
     def get_happiness_by_voter(self, voter):
-        return self.calc_happiness()[voter]
+        return self.calc_happiness(self.get_outcome())[voter]
+
+    def get_new_happiness_by_voter(self, voter, new_outcome):
+        return self.calc_happiness(new_outcome)[voter]
+
 
     def is_happy(self, happiness):
         if happiness == self.nCandidates-1:

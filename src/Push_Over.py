@@ -1,6 +1,6 @@
 from Voting_Scheme import VotingScheme
 import collections
-
+import itertools
 
 class PushOver:
     """
@@ -17,7 +17,8 @@ class PushOver:
         self.happiness = self.vs.calc_happiness()
         self.hate = self.calculate_hate()
         self.hate_list = self.calculate_hated_candidates()
-        self.calculate()
+        # self.calculate()
+        self.change_voter_votes_borda(1)
 
     def calculate(self):
         print("Outcome", self.outcome)
@@ -63,6 +64,12 @@ class PushOver:
     """
     def change_voter_votes_borda(self, voter):
         # TODO
+        i = 0
+        for possible in itertools.permutations(self.preferences[voter]):
+            print("A new possibility is", possible)
+            i += 1
+        print(i)
+
         # self.change_voter_vote(voter, len(self.preferences[voter]))
         return
 
