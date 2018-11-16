@@ -19,6 +19,7 @@ class VotingScheme:
     """
     Reset the voting object
     """
+
     def reset_voting(self):
         # Dictionary with the output of the vote
         for candidate in range(ord('A'), ord('A') + self.nCandidates):
@@ -27,6 +28,7 @@ class VotingScheme:
     """    
     Only the first candidate in the preference list gets a vote
     """
+
     def plurality_voting(self):
         self.reset_voting()
         for voter, voter_preference in self.preferences.items():
@@ -36,21 +38,32 @@ class VotingScheme:
     """    
     Only two first candidates in the preference list get a vote
     """
+
     def voting_for_two(self):
+
         self.reset_voting()
+
         for voter, voter_preference in self.preferences.items():
+
             self.voting[voter_preference[0]] += 1
-            self.voting[voter_preference[1]] += 1
+
+            if voter_preference[1] is not "":
+
+                self.voting[voter_preference[1]] += 1
+
         return self.voting
 
     """
     All the candidates in the preference list get a vote except the last one    
     """
+
     def anti_plurality_voting(self):
         self.reset_voting()
         for voter, voter_preference in self.preferences.items():
+
             for i, p in enumerate(voter_preference):
-                if i is len(voter_preference) - 1:
+
+                if i is len(voter_preference) - 1 or p is "":
                     break
                 self.voting[p] += 1
         return self.voting
@@ -58,16 +71,27 @@ class VotingScheme:
     """    
     If there are N candidates, the first in the preference list gets N points, the second N - 1, etc
     """
+
     def borda_voting(self):
+
         self.reset_voting()
+
         for voter, voter_preference in self.preferences.items():
+
             for i, p in enumerate(voter_preference):
+
+                if p is "":
+
+                    break
+
                 self.voting[p] += len(voter_preference) - 1 - i
+
         return self.voting
 
     """
     Get the result of the voting
     """
+
     def get_outcome(self):
         return sorted(self.voting, key=self.voting.get, reverse=True)
 
@@ -86,7 +110,6 @@ class VotingScheme:
         new_outcome = outcome
 
         for voter, voter_preferences in self.preferences.items():
-
             happiness[voter] = self.nCandidates - (voter_preferences.index(winner) + 1)
             # print('voter', voter, 'happiness is ', happiness[voter])
         return happiness
@@ -113,9 +136,8 @@ class VotingScheme:
     def get_new_happiness_by_voter(self, voter, new_outcome):
         return self.calc_happiness(new_outcome)[voter]
 
-
     def is_happy(self, happiness):
-        if happiness == self.nCandidates-1:
+        if happiness == self.nCandidates - 1:
             return True
         else:
             return False
@@ -145,6 +167,7 @@ class VotingScheme:
     will be made with the real preferences
     The only possible voting scheme here is plurality
     """
+
     def second_round(self, preferences):
         self.preferences = preferences
         first_round = self.get_outcome()

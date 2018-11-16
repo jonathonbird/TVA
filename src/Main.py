@@ -39,4 +39,4 @@ for voter in range(nVoters):
 # print("The overall happiness is", vote.calc_overall_happiness())
 
 # PushOver(preferences, VS.PLURALITY_VOTING)
-Model(preferences, VS.PLURALITY_VOTING)
+Model(preferences, VS.BORDA)

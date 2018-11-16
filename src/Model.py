@@ -21,39 +21,64 @@ class Model:
         # print(self.calculate())
         # self.change_voter_votes_borda(1)
 
-    '''
+    """
     Calculates for every voter the possible strategic-voting result
-    '''
+    
+    output possibly empty strategic-voting option 
+    """
     def calculate(self):
-        evaluations_of_voters = []
-        voter_hap = -1;
-        old_voter = -1
-        for voter in range(len(self.preferences)):
-            if voter_hap <0 or old_voter is not voter:
-                old_voter = voter
-                voter_hap = self.voting_scheme.calc_happiness(self.outcome)[voter]
-            voter_strategic_votes = {}
-            for new_voter_preference in itertools.permutations(self.preferences[voter]):
-                new_voter_preference = list(new_voter_preference)
-                new_preference = self.preferences.copy()
-                new_preference[voter] = new_voter_preference
-                new_voting_scheme = VotingScheme(new_preference, len(new_preference[0]))
-                new_voting_scheme.execute_voting(self.vs)
 
-                new_outcome = new_voting_scheme.get_outcome()
+        strategic_voting_option = []
+
+        for voter in range(len(self.preferences)):
+            voter_max_hap = self.voting_scheme.calc_happiness(self.outcome)[voter]
+            voter_strategic_votes = {}
+
+            candidates = self.preferences[voter]
+
+            # to perform bullet voting as strategic voting we have to generate the preference with only the first one
+            for candidate in candidates:
+
+                new_voter_preference = ["" for i in candidates]
+                new_voter_preference[0] = candidate
+
+                new_outcome, new_voting_scheme = self.calculate_new_outcome(new_voter_preference, voter)
+
                 if new_outcome[0] is self.outcome[0]:
                     continue
+
                 new_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome)
-                if new_happiness <= voter_hap:
+
+                if new_happiness <= voter_max_hap:
                     continue
-                voter_hap = new_happiness;
+
+                voter_strategic_votes[new_voting_scheme] = new_outcome
+
+            # create all the possible permutations of the preferences
+            for new_voter_preference in itertools.permutations(self.preferences[voter]):
+
+                new_voter_preference = list(new_voter_preference)
+
+                new_outcome, new_voting_scheme = self.calculate_new_outcome(new_voter_preference, voter)
+
+                if new_outcome[0] is self.outcome[0]:
+
+                    continue
+
+                new_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome)
+
+                if new_happiness <= voter_max_hap:
+
+                    continue
+
+                voter_max_hap = new_happiness;
                 voter_strategic_votes[new_voting_scheme] = new_outcome
 
                 print("For the voter", voter, "The new outcome is", new_outcome, " and the new preference is", new_voter_preference)
 
-            evaluations_of_voters.append(self.evaluate_outcome(voter, voter_strategic_votes))
+                strategic_voting_option.append(self.evaluate_outcome(voter, voter_strategic_votes))
 
-        return evaluations_of_voters
+        return strategic_voting_option
 
     """
     Evaluate the input strategic vote for the input voter and return the kind of strategic vote applied and to which candidate.
@@ -64,17 +89,32 @@ class Model:
     
     """
     def evaluate_outcome(self, voter, voter_strategic_votes):
+
         best_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, self.outcome)
         changes = []
+
+        # for bullet prove change the preference in the array with ""
+        # before checking if the position is greater/smaller than the original check if the position is ""
 
         for new_voting_scheme, new_outcome in voter_strategic_votes.items():
 
             if self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome) <= best_happiness:
+
                 continue
+
             best_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome)
+
             changes = []
+
+            if new_voting_scheme.preferences[voter][1] is "":
+                changes.append("There was bullet voting.")
+                print(changes + "voter original happiness was", self.voting_scheme.get_happiness_by_voter(voter), "and now is", self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome))
+
+                continue
+
             # Position is the index in the array and candidate the value
             for old_position, candidate in enumerate(self.outcome):
+
 
                 if new_outcome.index(candidate) < old_position:
                     # Compromising
@@ -92,3 +132,13 @@ class Model:
             #     print("The candidate", candidate, "was", situation)
 
         return changes
+
+    def calculate_new_outcome(self, new_voter_preference, voter):
+
+        new_preference = self.preferences.copy()
+        new_preference[voter] = new_voter_preference
+        new_voting_scheme = VotingScheme(new_preference, len(new_preference[0]))
+        new_voting_scheme.execute_voting(self.vs)
+        new_outcome = new_voting_scheme.get_outcome()
+
+        return new_outcome, new_voting_scheme
