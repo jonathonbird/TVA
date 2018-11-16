@@ -1,5 +1,4 @@
 from Voting_Scheme import VotingScheme
-import collections
 import itertools
 
 class Model:
@@ -18,13 +17,16 @@ class Model:
         # self.hate = self.calculate_hate()
         # self.hate_list = self.calculate_hated_candidates()
         print("The winning list is", self.outcome)
-        self.calculate()
+
+        # print(self.calculate())
         # self.change_voter_votes_borda(1)
 
     '''
     Calculates for every voter the possible strategic-voting result
     '''
     def calculate(self):
+        evaluations_of_voters = []
+
         for voter in range(len(self.preferences)):
             voter_hap = self.voting_scheme.calc_happiness(self.outcome)[voter]
             voter_strategic_votes = {}
@@ -45,7 +47,9 @@ class Model:
 
                 print("For the voter", voter, "The new outcome is", new_outcome, " and the new preference is", new_voter_preference)
 
-            self.evaluate_outcome(voter, voter_strategic_votes)
+            evaluations_of_voters.append(self.evaluate_outcome(voter, voter_strategic_votes))
+
+        return evaluations_of_voters
 
     """
     Evaluate the input strategic vote for the input voter and return the kind of strategic vote applied and to which candidate.
@@ -57,32 +61,30 @@ class Model:
     """
     def evaluate_outcome(self, voter, voter_strategic_votes):
         best_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, self.outcome)
+        changes = []
 
         for new_voting_scheme, new_outcome in voter_strategic_votes.items():
 
             if self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome) <= best_happiness:
                 continue
             best_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome)
-            changes = ""
+            changes = []
             # Position is the index in the array and candidate the value
             for old_position, candidate in enumerate(self.outcome):
 
                 if new_outcome.index(candidate) < old_position:
                     # Compromising
-                    if len(changes) > 0:
-                        changes += ", "
-                    changes += "compromised in favor of candidate " + str(candidate)
+                    changes.append("compromised in favor of candidate " + str(candidate))
                 elif new_outcome.index(candidate) > old_position:
                     # Burying
-                    if len(changes) > 0:
-                        changes += ", "
-                    changes += "buried the candidate " + str(candidate)
-                # else:
-                    # nothing
-            if len(changes) > 0:
-                changes = "Voter " + str(voter) + " " + changes + "."
-                print(changes + "voter original happiness was", self.voting_scheme.get_happiness_by_voter(voter), "and now is", self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome))
-                a = 1
+                    changes.append("buried the candidate " + str(candidate))
+
+            # if len(changes) > 0:
+            #     changes = "Voter " + str(voter) + " " + changes + "."
+            #     print(changes + "voter original happiness was", self.voting_scheme.get_happiness_by_voter(voter), "and now is", self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome))
+            #     a = 1
             # print("The changes with the new preferences", preferences, changes)
             # for candidate, situation in changes_list.items():
             #     print("The candidate", candidate, "was", situation)
+
+        return changes
