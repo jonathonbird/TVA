@@ -82,6 +82,8 @@ class VotingScheme:
 
         happiness = {}
         winner = outcome[0]
+        old_outcome = self.get_outcome()
+        new_outcome = outcome
 
         for voter, voter_preferences in self.preferences.items():
 
