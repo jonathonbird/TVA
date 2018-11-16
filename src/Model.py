@@ -26,9 +26,12 @@ class Model:
     '''
     def calculate(self):
         evaluations_of_voters = []
-
+        voter_hap = -1;
+        old_voter = -1
         for voter in range(len(self.preferences)):
-            voter_hap = self.voting_scheme.calc_happiness(self.outcome)[voter]
+            if voter_hap <0 or old_voter is not voter:
+                old_voter = voter
+                voter_hap = self.voting_scheme.calc_happiness(self.outcome)[voter]
             voter_strategic_votes = {}
             for new_voter_preference in itertools.permutations(self.preferences[voter]):
                 new_voter_preference = list(new_voter_preference)
@@ -43,6 +46,7 @@ class Model:
                 new_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome)
                 if new_happiness <= voter_hap:
                     continue
+                voter_hap = new_happiness;
                 voter_strategic_votes[new_voting_scheme] = new_outcome
 
                 print("For the voter", voter, "The new outcome is", new_outcome, " and the new preference is", new_voter_preference)
