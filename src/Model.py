@@ -18,7 +18,7 @@ class Model:
         # self.hate_list = self.calculate_hated_candidates()
         print("The winning list is", self.outcome)
 
-        # print(self.calculate())
+        print(self.calculate())
         # self.change_voter_votes_borda(1)
 
     """
@@ -108,7 +108,7 @@ class Model:
 
             if new_voting_scheme.preferences[voter][1] is "":
                 changes.append("There was bullet voting.")
-                print(changes + "voter original happiness was", self.voting_scheme.get_happiness_by_voter(voter), "and now is", self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome))
+                print(changes, "voter original happiness was", self.voting_scheme.get_happiness_by_voter(voter), "and now is", self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome))
 
                 continue
 
