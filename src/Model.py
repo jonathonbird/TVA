@@ -21,6 +21,9 @@ class Model:
         self.calculate()
         # self.change_voter_votes_borda(1)
 
+    '''
+    Calculates for every voter the possible strategic-voting result
+    '''
     def calculate(self):
         for voter in range(len(self.preferences)):
             voter_hap = self.voting_scheme.calc_happiness(self.outcome)[voter]
@@ -44,6 +47,14 @@ class Model:
 
             self.evaluate_outcome(voter, voter_strategic_votes)
 
+    """
+    Evaluate the input strategic vote for the input voter and return the kind of strategic vote applied and to which candidate.
+    input @voter 
+    input @voter_strategic_votes 
+    
+    output (dict/list/array?) changes
+    
+    """
     def evaluate_outcome(self, voter, voter_strategic_votes):
         best_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, self.outcome)
 
