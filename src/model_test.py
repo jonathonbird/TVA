@@ -23,7 +23,19 @@ class ModelTest(unittest.TestCase):
         }
 
     def test_calculate_function_returns_proper_output_when_using_plurality_voting(self):
-        expected_outcome = [[], [], [], [], [], ['buried the candidate A', 'compromised in favor of candidate B'], [], [], ['buried the candidate A', 'compromised in favor of candidate B'], []]
+        expected_outcome = [{},
+                            {},
+                            {},
+                            {},
+                            {},
+                            {"A": "This candidate was buried",
+                             "B": "There was compromised in favor of this candidate"},
+                            {},
+                            {},
+                            {"A": "This candidate was buried",
+                             "B": "There was compromised in favor of this candidate"},
+                            {}
+                            ]
 
         model = Model(self.preferences, VS.PLURALITY_VOTING)
         actual_outcome = model.calculate()
@@ -31,7 +43,22 @@ class ModelTest(unittest.TestCase):
         self.assertEqual(expected_outcome, actual_outcome)
 
     def test_calculate_function_returns_proper_output_when_using_borda_voting(self):
-        expected_outcome = [[], ['buried the candidate B', 'compromised in favor of candidate D'], ['buried the candidate B', 'compromised in favor of candidate D'], [], ['buried the candidate B', 'compromised in favor of candidate D'], ['buried the candidate B', 'compromised in favor of candidate D'], [], [], ['buried the candidate B', 'compromised in favor of candidate D', 'compromised in favor of candidate A'], []]
+        expected_outcome = [{},
+                            {'B': 'This candidate was buried',
+                             'D': 'There was compromised in favor of this candidate'},
+                            {'B': 'This candidate was buried',
+                             'D': 'There was compromised in favor of this candidate'},
+                            {},
+                            {'B': 'This candidate was buried',
+                             'D': 'There was compromised in favor of this candidate'},
+                            {'B': 'This candidate was buried',
+                             'D': 'There was compromised in favor of this candidate'},
+                            {},
+                            {},
+                            {'A': 'There was compromised in favor of this candidate',
+                             'B': 'This candidate was buried',
+                             'D': 'There was compromised in favor of this candidate'},
+                            {}]
 
         model = Model(self.preferences, VS.BORDA)
         actual_outcome = model.calculate()

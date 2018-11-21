@@ -1,10 +1,16 @@
 from Voting_Scheme import VotingScheme
 import itertools
+from enum import Enum
+
+COMPROMISE = "There was compromised in favor of this candidate"
+BURYING = "This candidate was buried"
+BULLET_VOTING = "There was bulet voting in favor of this candidate"
 
 class Model:
     """
     Voting a Candidate that is easy to beat insincerely high in the first round so that the second round is easy to win
     """
+
     def __init__(self, preferences, vs):
 
         self.preferences = preferences
@@ -26,6 +32,7 @@ class Model:
     
     output possibly empty strategic-voting option 
     """
+
     def calculate(self):
 
         strategic_voting_option = []
@@ -62,19 +69,18 @@ class Model:
                 new_outcome, new_voting_scheme = self.calculate_new_outcome(new_voter_preference, voter)
 
                 if new_outcome[0] is self.outcome[0]:
-
                     continue
 
                 new_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome)
 
                 if new_happiness <= voter_max_hap:
-
                     continue
 
-                voter_max_hap = new_happiness;
+                voter_max_hap = new_happiness
                 voter_strategic_votes[new_voting_scheme] = new_outcome
 
-                print("For the voter", voter, "The new outcome is", new_outcome, " and the new preference is", new_voter_preference)
+                print("For the voter", voter, "The new outcome is", new_outcome, " and the new preference is",
+                      new_voter_preference)
 
             strategic_voting_option.append(self.evaluate_outcome(voter, voter_strategic_votes))
 
@@ -88,10 +94,11 @@ class Model:
     output (dict/list/array?) changes
     
     """
+
     def evaluate_outcome(self, voter, voter_strategic_votes):
 
         best_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, self.outcome)
-        changes = []
+        changes = {}
 
         # for bullet prove change the preference in the array with ""
         # before checking if the position is greater/smaller than the original check if the position is ""
@@ -99,29 +106,27 @@ class Model:
         for new_voting_scheme, new_outcome in voter_strategic_votes.items():
 
             if self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome) <= best_happiness:
-
                 continue
 
             best_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome)
 
-            changes = []
+            changes = {}
 
             if new_voting_scheme.preferences[voter][1] is "":
-                changes.append("There was bullet voting.")
-                print(changes, "voter original happiness was", self.voting_scheme.get_happiness_by_voter(voter), "and now is", self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome))
-
+                changes = "There was bullet voting."
+                print(changes, "voter original happiness was", self.voting_scheme.get_happiness_by_voter(voter),
+                      "and now is", self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome))
                 continue
 
             # Position is the index in the array and candidate the value
             for old_position, candidate in enumerate(self.outcome):
 
-
                 if new_outcome.index(candidate) < old_position:
                     # Compromising
-                    changes.append("compromised in favor of candidate " + str(candidate))
+                    changes[candidate] = COMPROMISE
                 elif new_outcome.index(candidate) > old_position:
                     # Burying
-                    changes.append("buried the candidate " + str(candidate))
+                    changes[candidate] = BURYING
 
             # if len(changes) > 0:
             #     changes = "Voter " + str(voter) + " " + changes + "."
@@ -137,8 +142,10 @@ class Model:
 
         new_preference = self.preferences.copy()
         new_preference[voter] = new_voter_preference
+
         new_voting_scheme = VotingScheme(new_preference, len(new_preference[0]))
         new_voting_scheme.execute_voting(self.vs)
+
         new_outcome = new_voting_scheme.get_outcome()
 
         return new_outcome, new_voting_scheme
