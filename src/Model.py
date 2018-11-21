@@ -37,22 +37,22 @@ class Model:
             candidates = self.preferences[voter]
 
             # to perform bullet voting as strategic voting we have to generate the preference with only the first one
-            for candidate in candidates:
-
-                new_voter_preference = ["" for i in candidates]
-                new_voter_preference[0] = candidate
-
-                new_outcome, new_voting_scheme = self.calculate_new_outcome(new_voter_preference, voter)
-
-                if new_outcome[0] is self.outcome[0]:
-                    continue
-
-                new_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome)
-
-                if new_happiness <= voter_max_hap:
-                    continue
-
-                voter_strategic_votes[new_voting_scheme] = new_outcome
+            # for candidate in candidates:
+            #
+            #     new_voter_preference = ["" for i in candidates]
+            #     new_voter_preference[0] = candidate
+            #
+            #     new_outcome, new_voting_scheme = self.calculate_new_outcome(new_voter_preference, voter)
+            #
+            #     if new_outcome[0] is self.outcome[0]:
+            #         continue
+            #
+            #     new_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome)
+            #
+            #     if new_happiness <= voter_max_hap:
+            #         continue
+            #
+            #     voter_strategic_votes[new_voting_scheme] = new_outcome
 
             # create all the possible permutations of the preferences
             for new_voter_preference in itertools.permutations(self.preferences[voter]):
@@ -76,7 +76,7 @@ class Model:
 
                 print("For the voter", voter, "The new outcome is", new_outcome, " and the new preference is", new_voter_preference)
 
-                strategic_voting_option.append(self.evaluate_outcome(voter, voter_strategic_votes))
+            strategic_voting_option.append(self.evaluate_outcome(voter, voter_strategic_votes))
 
         return strategic_voting_option
 
