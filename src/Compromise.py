@@ -1,5 +1,6 @@
-from Voting_Scheme import VotingScheme
+from voting_scheme import VotingScheme
 """
+
     Voting a Candidate with the hope this candidate can get elected 
     
     Step1: exchange position of an alternative(not my first prefer) and hater

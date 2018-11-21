@@ -1,6 +1,6 @@
 import unittest
 from Burying import Burying
-from Voting_Scheme import VotingScheme
+from voting_scheme import VotingScheme
 
 
 class BuryingTest(unittest.TestCase):

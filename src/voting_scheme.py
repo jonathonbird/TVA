@@ -1,11 +1,4 @@
-from enum import Enum
-
-
-class VS(Enum):
-    PLURALITY_VOTING = 0
-    ANTI_PLURALITY_VOTING = 1
-    VOTING_FOR_TWO = 2
-    BORDA = 3
+from voting_scheme_option import VotingSchemeOption
 
 
 class VotingScheme:
@@ -152,11 +145,11 @@ class VotingScheme:
     """
 
     def execute_voting(self, voting_scheme):
-        if voting_scheme is VS.PLURALITY_VOTING:
+        if voting_scheme is VotingSchemeOption.PLURALITY_VOTING:
             return self.plurality_voting()
-        elif voting_scheme is VS.ANTI_PLURALITY_VOTING:
+        elif voting_scheme is VotingSchemeOption.ANTI_PLURALITY_VOTING:
             return self.anti_plurality_voting()
-        elif voting_scheme is VS.VOTING_FOR_TWO:
+        elif voting_scheme is VotingSchemeOption.VOTING_FOR_TWO:
             return self.voting_for_two()
         else:
             return self.borda_voting()

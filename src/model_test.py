@@ -1,6 +1,7 @@
 import unittest
-from Voting_Scheme import VS
+from voting_scheme_option import VotingSchemeOption
 from Model import Model
+import random
 
 
 class ModelTest(unittest.TestCase):
@@ -37,8 +38,8 @@ class ModelTest(unittest.TestCase):
                             {}
                             ]
 
-        model = Model(self.preferences, VS.PLURALITY_VOTING)
-        actual_outcome = model.calculate()
+        model = Model(self.preferences, VotingSchemeOption.PLURALITY_VOTING)
+        actual_outcome = model.calculate(False)
 
         self.assertEqual(expected_outcome, actual_outcome)
 
@@ -60,7 +61,28 @@ class ModelTest(unittest.TestCase):
                              'D': 'There was compromised in favor of this candidate'},
                             {}]
 
-        model = Model(self.preferences, VS.BORDA)
-        actual_outcome = model.calculate()
+        model = Model(self.preferences, VotingSchemeOption.BORDA)
+        actual_outcome = model.calculate(False)
 
         self.assertEqual(expected_outcome, actual_outcome)
+
+    def test_calculate_function_returns_only_bullet_voting_when_possible(self):
+        COMPROMISE = "There was compromised in favor of this candidate"
+        BURYING = "This candidate was buried"
+
+        nVoters = 10
+        nCandidates = 4
+        candidates = [chr(i) for i in range(ord('A'), ord('A') + nCandidates)]
+        different = 0
+        for i in range(100):
+            preferences = {}
+            for voter in range(nVoters):
+                preferences[voter] = random.sample(candidates, len(candidates))
+                # print("For voter", voter, "the preferences are:", preferences[voter])
+            model = Model(preferences, random.randint(0, 3))
+            actualOutput = model.calculate(True)
+            for voting_output in actualOutput:
+                for candidate, value in voting_output.items():
+                    if value == COMPROMISE or value == BURYING:
+                        different += 1
+        self.assertEqual(0, different)

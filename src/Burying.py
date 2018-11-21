@@ -1,5 +1,5 @@
-from Voting_Scheme import VotingScheme
-from Voting_Scheme import VS
+from voting_scheme import VotingScheme
+from voting_scheme import VS
 
 
 def same_outcomes(old_outcome, new_outcome):

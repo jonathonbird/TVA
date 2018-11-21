@@ -1,5 +1,5 @@
 import unittest
-from Voting_Scheme import VotingScheme
+from voting_scheme import VotingScheme
 
 
 class VotingSchemeShould(unittest.TestCase):

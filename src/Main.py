@@ -1,8 +1,8 @@
 # import numpy as np
 from random import sample
-from Voting_Scheme import VS
 # from Push_Over import  PushOver
 from Model import Model
+from voting_scheme_option import VotingSchemeOption
 
 nVoters = 10
 nCandidates = 4
@@ -39,4 +39,4 @@ for voter in range(nVoters):
 # print("The overall happiness is", vote.calc_overall_happiness())
 
 # PushOver(preferences, VS.PLURALITY_VOTING)
-Model(preferences, VS.BORDA)
+Model(preferences, VotingSchemeOption.BORDA)
