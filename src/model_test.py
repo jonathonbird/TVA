@@ -30,11 +30,11 @@ class ModelTest(unittest.TestCase):
                             {},
                             {},
                             {"A": "This candidate was buried",
-                             "B": "There was compromised in favor of this candidate"},
+                             "B": "Compromised in favor of this candidate"},
                             {},
                             {},
                             {"A": "This candidate was buried",
-                             "B": "There was compromised in favor of this candidate"},
+                             "B": "Compromised in favor of this candidate"},
                             {}
                             ]
 
@@ -46,19 +46,19 @@ class ModelTest(unittest.TestCase):
     def test_calculate_function_returns_proper_output_when_using_borda_voting(self):
         expected_outcome = [{},
                             {'B': 'This candidate was buried',
-                             'D': 'There was compromised in favor of this candidate'},
+                             'D': 'Compromised in favor of this candidate'},
                             {'B': 'This candidate was buried',
-                             'D': 'There was compromised in favor of this candidate'},
+                             'D': 'Compromised in favor of this candidate'},
                             {},
                             {'B': 'This candidate was buried',
-                             'D': 'There was compromised in favor of this candidate'},
+                             'D': 'Compromised in favor of this candidate'},
                             {'B': 'This candidate was buried',
-                             'D': 'There was compromised in favor of this candidate'},
+                             'D': 'Compromised in favor of this candidate'},
                             {},
                             {},
-                            {'A': 'There was compromised in favor of this candidate',
+                            {'A': 'Compromised in favor of this candidate',
                              'B': 'This candidate was buried',
-                             'D': 'There was compromised in favor of this candidate'},
+                             'D': 'Compromised in favor of this candidate'},
                             {}]
 
         model = Model(self.preferences, VotingSchemeOption.BORDA)
@@ -67,7 +67,7 @@ class ModelTest(unittest.TestCase):
         self.assertEqual(expected_outcome, actual_outcome)
 
     def test_calculate_function_returns_only_bullet_voting_when_possible(self):
-        COMPROMISE = "There was compromised in favor of this candidate"
+        COMPROMISE = "Compromised in favor of this candidate"
         BURYING = "This candidate was buried"
 
         nVoters = 10

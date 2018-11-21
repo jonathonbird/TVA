@@ -2,7 +2,7 @@ from voting_scheme import VotingScheme
 from voting_scheme_option import VotingSchemeOption
 import itertools
 
-COMPROMISE = "There was compromised in favor of this candidate"
+COMPROMISE = "Compromised in favor of this candidate"
 BURYING = "This candidate was buried"
 BULLET_VOTING = "There was bulet voting in favor of this candidate"
 

@@ -1,42 +1,62 @@
-# import numpy as np
 from random import sample
-# from Push_Over import  PushOver
 from Model import Model
 from voting_scheme_option import VotingSchemeOption
 
-nVoters = 10
-nCandidates = 4
 
-# this is not good, we need candidates to be in the form: {A, B, C, ...}
-# candidates = range(nCandidates)
+def get_random_preferences():
+    preferences = {}
+    for voter in range(int(nVoters)):
+        preferences[voter] = sample(candidates, len(candidates))
+    return preferences
+
+
+def ask_for_preferences():
+    preferences = {}
+    for voter in range(nVoters):
+        question = "Input preferences for voter %s in the form of ABCD: " % voter
+        preferences_input_string = input(question).upper()
+        preferences[voter] = list(preferences_input_string)
+    return preferences
+
+
+art = """\
+
+
+  __  __           _____                    _                                  _     __ 
+ |  \/  |   /\    / ____|     /\           (_)                                | |   /_ |
+ | \  / |  /  \  | (___      /  \   ___ ___ _  __ _ _ __  _ __ ___   ___ _ __ | |_   | |
+ | |\/| | / /\ \  \___ \    / /\ \ / __/ __| |/ _` | '_ \| '_ ` _ \ / _ \ '_ \| __|  | |
+ | |  | |/ ____ \ ____) |  / ____ \\__ \__ \ | (_| | | | | | | | | |  __/ | | | |_   | |
+ |_|  |_/_/    \_\_____/  /_/    \_\___/___/_|\__, |_| |_|_| |_| |_|\___|_| |_|\__|  |_|
+                                               __/ |                                    
+                                              |___/                                     
+
+"""
+print(art)
+
+nVoters = int(input("Input number of voters: "))
+nCandidates = int(input("Input number of candidates: "))
+
 candidates = [chr(i) for i in range(ord('A'), ord('A') + nCandidates)]
-preferences = {}
+print("Candidates are: ", candidates)
 
-# Dictionary with the output of the vote
-voting = {}
+randomPreferences = input("Do you want to generate random preferences? (y/n): ")
 
-# ouput (giorgos says that maybe this should be in a function, probably he's right
-for voter in range(nVoters):
-    preferences[voter] = sample(candidates, len(candidates))
-    print("For voter", voter, "the preferences are:", preferences[voter])
+if randomPreferences == "y":
+    preferences = get_random_preferences()
+else:
+    preferences = ask_for_preferences()
 
-# vote = VotingScheme(preferences, nCandidates)
-# print(vote.plurality_voting())
-# print(vote.voting_for_two())
-# print(vote.anti_plurality_voting())
-# vote.borda_voting()
-#vote.plurality_voting()
-#vote.voting_for_two()
-#vote.anti_plurality_voting()
-#print('OUTCOME: '+ str( vote.get_outcome()))
-# print("The overall happiness is", vote.calc_overall_happiness())
+[print("For voter %s the preferences are:" % voter, preferences[voter]) for voter in preferences]
+print()
+print("The possible voting schemes are: ")
+print("0 - Plurality voting")
+print("1 - Anti-plurality voting")
+print("2 - Voting for two")
+print("3 - Borda")
+voting_scheme_option = int(input("Introduce the number of the voting scheme to apply: "))
 
-#print("test-happiness of voter " + str(0) + " are: " + str(vote.calc_happiness_by_preference(vote.preferences[0][0])))
-# vote.compromisingStrategy(0,[4,3,2,1,0])
+model = Model(preferences, voting_scheme_option)
+output = model.calculate(False)
 
-# vote.borda_voting()
-# print('OUTCOME: \n', vote.get_outcome())
-# print("The overall happiness is", vote.calc_overall_happiness())
-
-# PushOver(preferences, VS.PLURALITY_VOTING)
-Model(preferences, VotingSchemeOption.BORDA)
+print(output)
