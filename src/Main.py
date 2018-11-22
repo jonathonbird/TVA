@@ -13,9 +13,33 @@ def get_random_preferences():
 def ask_for_preferences():
     preferences = {}
     for voter in range(nVoters):
-        question = "Input preferences for voter %s in the form of ABCD: " % voter
-        preferences_input_string = input(question).upper()
-        preferences[voter] = list(preferences_input_string)
+        correct_input = False
+        while not correct_input:
+            times_ocurred = [0 for i in range(nCandidates)]
+            correct_input = True
+            question = "Input preferences for voter %s in the form of ABCD: " % voter
+            preferences_input_string = input(question).upper()
+            preferences[voter] = list(preferences_input_string)
+
+            if len(preferences[voter]) != nCandidates:
+                print("Error in the input, the number of candidates is not correct. Expected %d, received %d"
+                      % (nCandidates, len(preferences[voter])))
+                correct_input = False
+                continue
+
+            for preference in preferences[voter]:
+                if not candidates.__contains__(preference):
+                    print("Error in the input, candidate %s is not in the candidate list." % preference)
+                    correct_input = False
+                    break
+                if times_ocurred[ord(preference) - 65] == 0:
+                    times_ocurred[ord(preference) - 65] = 1
+                else:
+                    print("Error in the input, the candidates %s is present more than once in the preference list."
+                          % preference)
+                    correct_input = False
+                    break
+
     return preferences
 
 
