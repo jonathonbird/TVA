@@ -57,8 +57,22 @@ art = """\
 """
 print(art)
 
-nVoters = int(input("Input number of voters: "))
-nCandidates = int(input("Input number of candidates: "))
+error_in_input = True
+
+while error_in_input:
+    try:
+        nVoters = int(input("Input number of voters: "))
+        error_in_input = False
+    except ValueError:
+        print("The number of voters must be an integer")
+
+error_in_input = True
+while error_in_input:
+    try:
+        nCandidates = int(input("Input number of candidates: "))
+        error_in_input = False
+    except ValueError:
+        print("The number of candidates must be an integer")
 
 candidates = [chr(i) for i in range(ord('A'), ord('A') + nCandidates)]
 print("Candidates are: ", candidates)
@@ -87,8 +101,6 @@ if voting_scheme_option != 0:
 else:
     outcome, overall_happiness, strategic_voting_option, risk = model.calculate(False)
 
-output2 = model.calculate(True)
-
 print()
 print("---------------------------------------------------------------------------------------------------------------")
 print()
@@ -101,11 +113,16 @@ print("Set of strategic voting options, for each voter a tuple (v, O, H, z, c) w
       "O = the new outcome after applying v.\n\t"
       "H = New overall happiness level.\n\t"
       "z = Explanation of why the voter prefers this new outcome.\n\t"
-      "c = Strategic voting schemes applied")
+      "c = Strategic voting schemes applied.")
 print()
 voter = 0
 for new_voter_preferences, new_final_outcome, new_overall_happiness, changes in strategic_voting_option:
-    print("Voter", voter)
+    if len(new_voter_preferences) == 0:
+        print("Voter", voter, "has an empty set")
+        voter += 1
+        continue
+    else:
+        print("Voter", voter)
     print("\tv:", new_voter_preferences)
     print("\tO:", new_final_outcome)
     print("\tH:", new_overall_happiness)
