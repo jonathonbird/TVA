@@ -8,6 +8,7 @@ class VotingScheme:
         self.voting = {}
         self.nCandidates = n_candidates
         self.reset_voting()
+        self.overall_happiness = 0
 
     """
     Reset the voting object
@@ -26,6 +27,7 @@ class VotingScheme:
         self.reset_voting()
         for voter, voter_preference in self.preferences.items():
             self.voting[voter_preference[0]] += 1
+
         return self.voting
 
     """    
@@ -41,7 +43,6 @@ class VotingScheme:
             self.voting[voter_preference[0]] += 1
 
             if voter_preference[1] is not "":
-
                 self.voting[voter_preference[1]] += 1
 
         return self.voting
@@ -59,6 +60,7 @@ class VotingScheme:
                 if i is len(voter_preference) - 1 or p is "":
                     break
                 self.voting[p] += 1
+
         return self.voting
 
     """    
@@ -74,7 +76,6 @@ class VotingScheme:
             for i, p in enumerate(voter_preference):
 
                 if p is "":
-
                     break
 
                 self.voting[p] += len(voter_preference) - 1 - i
@@ -107,9 +108,9 @@ class VotingScheme:
             # print('voter', voter, 'happiness is ', happiness[voter])
         return happiness
 
-    def calc_overall_happiness(self):
+    def calc_overall_happiness(self, outcome):
         overall = 0
-        for happiness in self.calc_happiness().values():
+        for happiness in self.calc_happiness(outcome).values():
             overall += happiness
         return overall
 

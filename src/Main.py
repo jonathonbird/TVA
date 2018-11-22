@@ -22,15 +22,14 @@ def ask_for_preferences():
 art = """\
 
 
-  __  __           _____                    _                                  _     __ 
- |  \/  |   /\    / ____|     /\           (_)                                | |   /_ |
- | \  / |  /  \  | (___      /  \   ___ ___ _  __ _ _ __  _ __ ___   ___ _ __ | |_   | |
- | |\/| | / /\ \  \___ \    / /\ \ / __/ __| |/ _` | '_ \| '_ ` _ \ / _ \ '_ \| __|  | |
- | |  | |/ ____ \ ____) |  / ____ \\__ \__ \ | (_| | | | | | | | | |  __/ | | | |_   | |
- |_|  |_/_/    \_\_____/  /_/    \_\___/___/_|\__, |_| |_|_| |_| |_|\___|_| |_|\__|  |_|
-                                               __/ |                                    
-                                              |___/                                     
-
+  _________      __                        _                                  _     __ 
+ |__   __\ \    / /\         /\           (_)                                | |   /_ |
+    | |   \ \  / /  \       /  \   ___ ___ _  __ _ _ __  _ __ ___   ___ _ __ | |_   | |
+    | |    \ \/ / /\ \     / /\ \ / __/ __| |/ _` | '_ \| '_ ` _ \ / _ \ '_ \| __|  | |
+    | |     \  / ____ \   / ____ \\__ \__ \ | (_| | | | | | | | | |  __/ | | | |_   | |
+    |_|      \/_/    \_\ /_/    \_\___/___/_|\__, |_| |_|_| |_| |_|\___|_| |_|\__|  |_|
+                                              __/ |                                    
+                                             |___/                                     
 """
 print(art)
 
@@ -57,6 +56,28 @@ print("3 - Borda")
 voting_scheme_option = int(input("Introduce the number of the voting scheme to apply: "))
 
 model = Model(preferences, voting_scheme_option)
-output = model.calculate(False)
 
-print(output)
+outcome, overall_happiness, strategic_voting_option, risk = model.calculate(False)
+
+output2 = model.calculate(True)
+
+print()
+print("---------------------------------------------------------------------------------------------------------------")
+print()
+print("Non strategic voting outcome:", outcome)
+print()
+print("Overall Happiness for non strategic voting outcome:", overall_happiness)
+print()
+print("Set of strategic voting options, for each voter a tuple (v, O, H, z) where: \n\t"
+      "v is the modified preference list.\n\t"
+      "O the new outcome after applying v.\n\t"
+      "H the new overall happiness level.\n\t"
+      "z explanation of why the voter prefers this new outcome.")
+print()
+voter = 0
+for new_preferences, new_final_outcome, new_overall_happiness, changes in strategic_voting_option:
+    print("Voter", voter, "\n\tv: ", new_preferences, "\n\tO: ", new_final_outcome,
+          "\n\tH: ", new_overall_happiness, "\n\tThe changes are: ", changes)
+    voter += 1
+print()
+print("Overall risk of strategic voting", risk)
