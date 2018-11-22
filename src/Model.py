@@ -2,15 +2,16 @@ from voting_scheme import VotingScheme
 from voting_scheme_option import VotingSchemeOption
 import itertools
 
-COMPROMISE = "Compromised in favor of this candidate"
-BURYING = "This candidate was buried"
-BULLET_VOTING = "There was bulet voting in favor of this candidate"
-
 
 class Model:
+
+    COMPROMISE = "Compromised in favor of this candidate"
+    BURYING = "This candidate was buried"
+    BULLET_VOTING = "There was bulet voting in favor of this candidate"
+
     """
-    Voting a Candidate that is easy to beat insincerely high in the first round so that the second round is easy to win
-    """
+        Voting a Candidate that is easy to beat insincerely high in the first round so that the second round is easy to win
+        """
 
     def __init__(self, preferences, voting_scheme_option):
 
@@ -134,9 +135,12 @@ class Model:
 
             if new_voting_scheme.preferences[voter][1] is "":
                 candidate = new_voting_scheme.preferences[voter][0]
-                changes[candidate] = BULLET_VOTING
+                changes[candidate] = self.BULLET_VOTING
                 # print(changes, "voter original happiness was", self.voting_scheme.get_happiness_by_voter(voter),
                 #       "and now is", self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome))
+                new_preferences = new_voting_scheme.preferences[voter]
+                new_final_outcome = new_outcome
+                new_overall_happiness = self.voting_scheme.calc_overall_happiness(new_outcome)
                 continue
 
             # Position is the index in the array and candidate the value
@@ -144,22 +148,14 @@ class Model:
 
                 if new_outcome.index(candidate) < old_position:
                     # Compromising
-                    changes[candidate] = COMPROMISE
+                    changes[candidate] = self.COMPROMISE
                 elif new_outcome.index(candidate) > old_position:
                     # Burying
-                    changes[candidate] = BURYING
+                    changes[candidate] = self.BURYING
 
             new_preferences = new_voting_scheme.preferences[voter]
             new_final_outcome = new_outcome
             new_overall_happiness = self.voting_scheme.calc_overall_happiness(new_outcome)
-
-            # if len(changes) > 0:
-            #     changes = "Voter " + str(voter) + " " + changes + "."
-            #     print(changes + "voter original happiness was", self.voting_scheme.get_happiness_by_voter(voter), "and now is", self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome))
-            #     a = 1
-            # print("The changes with the new preferences", preferences, changes)
-            # for candidate, situation in changes_list.items():
-            #     print("The candidate", candidate, "was", situation)
 
         return new_preferences, new_final_outcome, new_overall_happiness, changes
 

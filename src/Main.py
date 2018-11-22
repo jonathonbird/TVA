@@ -54,10 +54,14 @@ print("1 - Anti-plurality voting")
 print("2 - Voting for two")
 print("3 - Borda")
 voting_scheme_option = int(input("Introduce the number of the voting scheme to apply: "))
-
 model = Model(preferences, voting_scheme_option)
 
-outcome, overall_happiness, strategic_voting_option, risk = model.calculate(False)
+# In plurality voting bullet voting doesn't make sense because only the first preference gets a vote
+if voting_scheme_option != 0:
+    bullet_voting_allowed = input("Is bullet voting allowed? (y/n): ")
+    outcome, overall_happiness, strategic_voting_option, risk = model.calculate(bullet_voting_allowed == "y")
+else:
+    outcome, overall_happiness, strategic_voting_option, risk = model.calculate(False)
 
 output2 = model.calculate(True)
 
@@ -68,16 +72,42 @@ print("Non strategic voting outcome:", outcome)
 print()
 print("Overall Happiness for non strategic voting outcome:", overall_happiness)
 print()
-print("Set of strategic voting options, for each voter a tuple (v, O, H, z) where: \n\t"
-      "v is the modified preference list.\n\t"
-      "O the new outcome after applying v.\n\t"
-      "H the new overall happiness level.\n\t"
-      "z explanation of why the voter prefers this new outcome.")
+print("Set of strategic voting options, for each voter a tuple (v, O, H, z, c) where: \n\t"
+      "v = Modified preference list.\n\t"
+      "O = the new outcome after applying v.\n\t"
+      "H = New overall happiness level.\n\t"
+      "z = Explanation of why the voter prefers this new outcome.\n\t"
+      "c = Strategic voting schemes applied")
 print()
 voter = 0
-for new_preferences, new_final_outcome, new_overall_happiness, changes in strategic_voting_option:
-    print("Voter", voter, "\n\tv: ", new_preferences, "\n\tO: ", new_final_outcome,
-          "\n\tH: ", new_overall_happiness, "\n\tThe changes are: ", changes)
+for new_voter_preferences, new_final_outcome, new_overall_happiness, changes in strategic_voting_option:
+    print("Voter", voter)
+    print("\tv:", new_voter_preferences)
+    print("\tO:", new_final_outcome)
+    print("\tH:", new_overall_happiness)
+    if len(new_final_outcome) > 0:
+
+        index_of_previous_winner = preferences[voter].index(outcome[0])
+        index_of_new_winner = preferences[voter].index(new_final_outcome[0])
+
+        explanation = "Before applying tactical voting, the winner was in position %d " \
+                      "of the voter preference while the new winner is in position %d." \
+                      % (index_of_previous_winner, index_of_new_winner)
+    else:
+        explanation = ""
+
+    print("\tz:", explanation)
+
+    changes_string = ""
+    for candidate, change in changes.items():
+        if change == Model.COMPROMISE:
+            changes_string += "Compromised in favor of candidate %s. " % candidate
+        elif change == Model.BURYING:
+            changes_string += "Candidate %s was buried. " % candidate
+        elif change == Model.BULLET_VOTING:
+            changes_string += "Bullet voting in favor of candidate %s. " % candidate
+
+    print("\tc:", changes_string)
     voter += 1
 print()
 print("Overall risk of strategic voting", risk)
