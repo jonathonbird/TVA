@@ -4,7 +4,6 @@ import itertools
 
 
 class Model:
-
     COMPROMISE = "Compromised in favor of this candidate"
     BURYING = "This candidate was buried"
     BULLET_VOTING = "There was bulet voting in favor of this candidate"
@@ -23,12 +22,6 @@ class Model:
         self.outcome = self.voting_scheme.get_outcome()
         self.happiness = self.voting_scheme.calc_happiness(self.outcome)
         self.overall_happiness = self.voting_scheme.calc_overall_happiness(self.outcome)
-        # self.hate = self.calculate_hate()
-        # self.hate_list = self.calculate_hated_candidates()
-        # print("The winning list is", self.outcome)
-
-        # print(self.calculate())
-        # self.change_voter_votes_borda(1)
 
     """
     Calculates for every voter the possible strategic-voting result
@@ -48,7 +41,8 @@ class Model:
             candidates = self.preferences[voter]
 
             if self.voting_scheme_option != VotingSchemeOption.PLURALITY_VOTING and bullet_voting_allowed:
-                self.calculate_bullet_voting(candidates, voter, voter_max_hap, voter_strategic_votes, voter_original_hap)
+                self.calculate_bullet_voting(candidates, voter, voter_max_hap, voter_strategic_votes,
+                                             voter_original_hap)
             else:
                 self.calculate_compromising_and_burying(voter, voter_max_hap, voter_strategic_votes, voter_original_hap)
 
@@ -78,9 +72,6 @@ class Model:
 
             voter_max_hap = new_happiness
             voter_strategic_votes[new_voting_scheme] = new_outcome
-
-            # print("For the voter", voter, "The new outcome is", new_outcome, " and the new preference is",
-            #       new_voter_preference)
 
     def calculate_bullet_voting(self, candidates, voter, voter_max_hap, voter_strategic_votes, voter_original_hap):
         # to perform bullet voting as strategic voting we have to generate the preference with only the first one
@@ -136,8 +127,6 @@ class Model:
             if new_voting_scheme.preferences[voter][1] is "":
                 candidate = new_voting_scheme.preferences[voter][0]
                 changes[candidate] = self.BULLET_VOTING
-                # print(changes, "voter original happiness was", self.voting_scheme.get_happiness_by_voter(voter),
-                #       "and now is", self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome))
                 new_preferences = new_voting_scheme.preferences[voter]
                 new_final_outcome = new_outcome
                 new_overall_happiness = self.voting_scheme.calc_overall_happiness(new_outcome)

@@ -7,7 +7,7 @@ This software is the implementation of an agent called Tactical Voting Analyst (
 
 ## Collaborators
 Alessandro Scoppio  
-Giorgos Patsiaouras  
+Georgios Patsiaouras  
 Rodrigo Emmanuel Brechard Alarcia  
 Truong Huy Cuong 
 
@@ -16,4 +16,6 @@ Truong Huy Cuong
         
 ## Run tests
         $ python3.6 -m unittest discover -s src -t src -p *_test.py
+        
+## Explanation of the software's output
 

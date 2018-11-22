@@ -1,4 +1,4 @@
-# Some Notes on MAS Assignment from the Russian Statue Guy
+# Some Notes on MAS Assignment from Kyrill
 
 1. The report is more important than the code and that’s why it takes 60%.
 2. Is it always better to apply strategic voting?
