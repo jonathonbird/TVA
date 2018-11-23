@@ -5,25 +5,25 @@ from voting_scheme_option import VotingSchemeOption
 
 def get_random_preferences():
     preferences = {}
-    for voter in range(int(nVoters)):
+    for voter in range(int(n_voters)):
         preferences[voter] = sample(candidates, len(candidates))
     return preferences
 
 
 def ask_for_preferences():
     preferences = {}
-    for voter in range(nVoters):
+    for voter in range(n_voters):
         correct_input = False
         while not correct_input:
-            times_ocurred = [0 for i in range(nCandidates)]
+            times_ocurred = [0 for i in range(n_candidates)]
             correct_input = True
             question = "Input preferences for voter %s in the form of ABCD: " % voter
             preferences_input_string = input(question).upper()
             preferences[voter] = list(preferences_input_string)
 
-            if len(preferences[voter]) != nCandidates:
+            if len(preferences[voter]) != n_candidates:
                 print("Error in the input, the number of candidates is not correct. Expected %d, received %d"
-                      % (nCandidates, len(preferences[voter])))
+                      % (n_candidates, len(preferences[voter])))
                 correct_input = False
                 continue
 
@@ -61,7 +61,7 @@ error_in_input = True
 
 while error_in_input:
     try:
-        nVoters = int(input("Input number of voters: "))
+        n_voters = int(input("Input number of voters: "))
         error_in_input = False
     except ValueError:
         print("The number of voters must be an integer")
@@ -69,12 +69,12 @@ while error_in_input:
 error_in_input = True
 while error_in_input:
     try:
-        nCandidates = int(input("Input number of candidates: "))
+        n_candidates = int(input("Input number of candidates: "))
         error_in_input = False
     except ValueError:
         print("The number of candidates must be an integer")
 
-candidates = [chr(i) for i in range(ord('A'), ord('A') + nCandidates)]
+candidates = [chr(i) for i in range(ord('A'), ord('A') + n_candidates)]
 print("Candidates are: ", candidates)
 
 randomPreferences = input("Do you want to generate random preferences? (y/n): ")
@@ -132,7 +132,7 @@ for new_voter_preferences, new_final_outcome, new_overall_happiness, changes in 
         index_of_new_winner = preferences[voter].index(new_final_outcome[0])
 
         explanation = "Before applying tactical voting, the winner was in position %d " \
-                      "of the voter preference while the new winner is in position %d." \
+                      "of the voter preference list while the new winner is in position %d." \
                       % (index_of_previous_winner, index_of_new_winner)
     else:
         explanation = ""
