@@ -150,5 +150,7 @@ for new_voter_preferences, new_final_outcome, new_overall_happiness, changes in 
 
     print("\tc:", changes_string)
     voter += 1
+
+
 print()
 print("Overall risk of strategic voting", risk)
