@@ -101,6 +101,9 @@ if voting_scheme_option != 0:
 else:
     outcome, overall_happiness, strategic_voting_option, risk = model.calculate(False)
 
+from voting_scheme import VotingScheme as VS
+print("The outcome list is:", VS(preferences, n_candidates).execute_voting(voting_scheme_option))
+
 print()
 print("---------------------------------------------------------------------------------------------------------------")
 print()

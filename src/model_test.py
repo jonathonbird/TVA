@@ -44,7 +44,7 @@ class ModelTest(unittest.TestCase):
                               {'A': 'This candidate was buried',
                                'B': 'Compromised in favor of this candidate'}),
                              ([], [], 0, {})],
-                            1.2)
+                            0.2)
 
         model = Model(self.preferences, VotingSchemeOption.PLURALITY_VOTING)
         actual_outcome = model.calculate(False)
@@ -93,21 +93,21 @@ class ModelTest(unittest.TestCase):
         self.assertEqual(expected_outcome, actual_outcome)
 
     def test_calculate_function_returns_only_bullet_voting_when_possible(self):
-        BULLET = "There was bulet voting in favor of this candidate"
+        BULLET_VOTING = "There was bulet voting in favor of this candidate"
 
-        nVoters = 10
-        nCandidates = 4
-        candidates = [chr(i) for i in range(ord('A'), ord('A') + nCandidates)]
+        n_voters = 10
+        n_candidates = 4
+        candidates = [chr(i) for i in range(ord('A'), ord('A') + n_candidates)]
         different = 0
         for i in range(10000):
             preferences = {}
-            for voter in range(nVoters):
+            for voter in range(n_voters):
                 preferences[voter] = random.sample(candidates, len(candidates))
                 # print("For voter", voter, "the preferences are:", preferences[voter])
             model = Model(preferences, random.randint(0, 3))
             actual_output = model.calculate(True)
             for new_preferences, new_final_outcome, new_overall_happiness, changes in actual_output[2]:
                 for candidate, message in changes.items():
-                    if message != BULLET:
+                    if message != BULLET_VOTING:
                         different += 1
         self.assertEqual(0, different)

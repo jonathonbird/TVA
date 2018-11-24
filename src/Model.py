@@ -43,6 +43,9 @@ class Model:
             if self.voting_scheme_option != VotingSchemeOption.PLURALITY_VOTING and bullet_voting_allowed:
                 self.calculate_bullet_voting(candidates, voter, voter_max_hap, voter_strategic_votes,
                                              voter_original_hap)
+            elif self.voting_scheme_option == VotingSchemeOption.PLURALITY_VOTING:
+                self.calculate_compromising_and_burying_plurality(voter, voter_max_hap, voter_strategic_votes,
+                                                                  voter_original_hap)
             else:
                 self.calculate_compromising_and_burying(voter, voter_max_hap, voter_strategic_votes, voter_original_hap)
 
@@ -51,6 +54,34 @@ class Model:
         risk = self.n_strategic_options / len(self.preferences)
 
         return self.outcome, self.overall_happiness, strategic_voting_option, risk
+
+    def calculate_compromising_and_burying_plurality(self, voter, voter_max_hap, voter_strategic_votes,
+                                                     voter_original_hap):
+
+        for index, candidate in enumerate(self.preferences[voter]):
+            new_voter = voter
+            new_voter_preferences = self.preferences[voter].copy()
+
+            # Change the preferred voted
+            new_voter_preferences[index] = new_voter_preferences[0]
+            new_voter_preferences[0] = candidate
+            # print("The voter", voter, "was voting for", voter_preferences[0], "and is gonna try to vote for", help)
+
+            new_outcome, new_voting_scheme = self.calculate_new_outcome(new_voter_preferences, voter)
+
+            if new_outcome[0] is self.outcome[0]:
+                continue
+
+            new_happiness = self.voting_scheme.get_new_happiness_by_voter(voter, new_outcome)
+
+            if new_happiness > voter_original_hap:
+                self.n_strategic_options += 1
+
+            if new_happiness <= voter_max_hap:
+                continue
+
+            voter_max_hap = new_happiness
+            voter_strategic_votes[new_voting_scheme] = new_outcome
 
     def calculate_compromising_and_burying(self, voter, voter_max_hap, voter_strategic_votes, voter_original_hap):
         for new_voter_preference in itertools.permutations(self.preferences[voter]):
