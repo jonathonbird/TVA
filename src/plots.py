@@ -15,6 +15,25 @@ minimum_n_candidates = 2
 number_of_times_execute = 200
 
 history = np.zeros((maximum_n_voters, maximum_n_candidates))
+risk_history = [0, 0, 0, 0]
+
+
+def get_risk_plot(n_times):
+    n_candidates = 6
+    n_voters = 10
+    candidates = [chr(i) for i in range(ord('A'), ord('A') + n_candidates)]
+    for i in range(n_times):
+        preferences = get_random_preferences(n_voters, candidates)
+        for voting_scheme_option in range(4):
+            model = Model(preferences, voting_scheme_option)
+            outcome, overall_happiness, strategic_voting_option, risk = model.calculate(False)
+            risk_history[voting_scheme_option] += risk
+
+    # Calculate the average
+    for voting_scheme_option in range(4):
+        risk_history[voting_scheme_option] = risk_history[voting_scheme_option] / n_times
+    hist = ["Plurality", "Anti-plurality", "Voting for two", "Borda voting"]
+    plt.bar(hist, risk_history)
 
 
 def get_random_preferences(n_voters, candidates):
@@ -84,14 +103,16 @@ def create_plot(voting_scheme_option):
     plt.figure()
 
 
-for option in range(1):
-    calculate_average_risk(option)
-    create_plot(option)
-    history = np.zeros((maximum_n_voters, maximum_n_candidates))
+# for option in range(1):
+#     calculate_average_risk(option)
+#     create_plot(option)
+#     history = np.zeros((maximum_n_voters, maximum_n_candidates))
 
-print("Shape of history", history.shape)
-print("Number of voters", maximum_n_voters)
-print("Number of candidates", maximum_n_candidates)
+# print("Shape of history", history.shape)
+# print("Number of voters", maximum_n_voters)
+# print("Number of candidates", maximum_n_candidates)
+#
+# plt.legend()
 
-plt.legend()
+get_risk_plot(10000)
 plt.show()
